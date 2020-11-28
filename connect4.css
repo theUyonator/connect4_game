@@ -1,0 +1,161 @@
+
+body{
+  background-color:#000000;
+  height:100%;
+  margin:0;
+  padding:0;
+}
+
+.btn{
+  height:30px;
+  width:150px;
+  border-radius:5px;
+  position:absolute;
+  /* margin-left:40rem; */
+  left:50%;
+  transform:translate(-50%);
+}
+.btn > a{
+
+  text-decoration:none;
+  color: #000000;
+}
+.btn:hover{
+  cursor: pointer;
+  color:#ffffff;
+  background-color:#347EE9;
+ }
+ .btn > a:hover {
+   color:#ffffff;
+ }
+ 
+ #start{
+ 
+   height: 80vh;
+   font-family: Carrois+Gothic+SC;
+   position: relative;
+   margin-top:25px;
+ }
+
+ #title{
+
+  font-size: 2rem;
+}
+
+#title > p{
+
+  transform: rotateX( 15deg );
+  line-height: 0.75;
+  text-align: center;
+  color: #F7F603;
+}
+
+#title > p > span {
+
+  font-size:5rem;
+}
+
+.player-name{
+  position:absolute;
+  left:50%;
+  transform:translate(-50%);
+
+}
+
+.player-turn{
+  color:#F7F603;
+}
+
+/*Now we style the game board*/
+
+#game{
+
+  position:absolute;
+  top:17rem;
+  left:50%;
+  transform:translate(-50%);
+  width:450px;
+  height:400px;
+  background-color:#F7F603;
+  border:3px solid #ffffff;
+  border-radius:5px;
+  box-shadow: 5px 5px #ffffff;
+  opacity:0;
+}
+/* style board to be in the center  */
+#board{
+  position:absolute;
+  left:2rem;
+}
+
+
+/* game board table */
+
+#board td {
+  width: 50px;
+  height: 50px;
+  background-color:#ffffff;
+  border: solid 1px #666;
+  border-radius:50%;
+}
+
+/* pieces are div within game table cells: draw as colored circles */
+
+.piece {
+  /* TODO: make into circles */
+  margin: 5px;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+}
+
+/* TODO: make pieces red/blue,  depending on player 1/2 piece */
+
+.piece.p1{
+
+  background-color:red;
+}
+.piece.p2{
+  background-color:blue;
+}
+
+/* column-top is table row of clickable areas for each column */
+
+#column-top td {
+  border: dashed 1px lightgray;
+}
+
+#column-top td:hover {
+  background-color: #000000;
+}
+
+#reset{
+
+  height:30px;
+  width:150px;
+  position:absolute;
+  top:90vh;
+  left:50%;
+  transform:translate(-50%);
+  background-color:#ffffff;
+  border:1px solid #000000;
+  border-radius:5px;
+  opacity:0;
+
+}
+#reset > a{
+
+  text-decoration:none;
+  color: #000000;
+  position:absolute;
+  margin:5px 60px;
+}
+#reset:hover{
+  cursor: pointer;
+  color:#ffffff;
+  background-color:#347EE9;
+ }
+ #reset > a:hover{
+   color:#ffffff;
+ }
+
