@@ -34,7 +34,7 @@ startBtn.addEventListener('click', function (e) {
   //The first name entered is assigned the currPlayer value of 1
 
   for(let index = 1; index < players.length; index++){
-    players[index].name = prompt(`Player ${index} enter your name, you will be red! `)
+    players[index].name = prompt(`Player ${index} enter your name, you will be ${players[index].color}! `)
   }
 
     playerTurn.innerText = `${players[1].name}'s turn`;
