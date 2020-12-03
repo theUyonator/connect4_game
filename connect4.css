@@ -11,22 +11,14 @@ body{
   width:150px;
   border-radius:5px;
   position:absolute;
-  /* margin-left:40rem; */
   left:50%;
   transform:translate(-50%);
 }
-.btn > a{
 
-  text-decoration:none;
-  color: #000000;
-}
 .btn:hover{
   cursor: pointer;
   color:#ffffff;
   background-color:#347EE9;
- }
- .btn > a:hover {
-   color:#ffffff;
  }
  
  #start{
@@ -88,7 +80,6 @@ body{
   left:2rem;
 }
 
-
 /* game board table */
 
 #board td {
@@ -102,17 +93,13 @@ body{
 /* pieces are div within game table cells: draw as colored circles */
 
 .piece {
-  /* TODO: make into circles */
   margin: 5px;
   width: 80%;
   height: 80%;
   border-radius: 50%;
 }
 
-/* TODO: make pieces red/blue,  depending on player 1/2 piece */
-
 .piece.p1{
-
   background-color:red;
 }
 .piece.p2{

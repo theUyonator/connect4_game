@@ -5,12 +5,22 @@
  * board fills (tie)
  */
 
-let WIDTH = 7;
-let HEIGHT = 6;
-let player1 = null;
-let player2 = null;
+const WIDTH = 7;
+const HEIGHT = 6;
+const players = [
+  '',
+  {
+    name: '',
+    color:'red'
+  },
+  {
+    name:'',
+    color:'blue'
+  }
+]
 let currPlayer = 1; // active player: 1 or 2
 let htmlBoard = []; // array of rows, each row is array of cells  (board[y][x])
+let gameStillRunning = true; //This is a variable to track if the game has ended or is still being played 
 
 const startBtn = document.getElementById('start-button');
 const game = document.getElementById('game');
@@ -18,34 +28,27 @@ const playerTurn = document.querySelector('.player-turn');
 const reset = document.getElementById('reset');
 
 startBtn.addEventListener('click', function (e) {
+ e.preventDefault();
 
-  e.preventDefault();
-  
   // This sets up a prompt to allow players to enter their names and use it to play the game once the game starts
-  //The first name entered is signed the currPlayer value of 1
+  //The first name entered is assigned the currPlayer value of 1
 
-  while(!player1){
-     player1 = prompt('Player 1 enter your name, you will be red!')
+  for(let index = 1; index < players.length; index++){
+    players[index].name = prompt(`Player ${index} enter your name, you will be red! `)
   }
-  while(!player2){
-     player2 = prompt('Player 2 enter your name, you will be blue!')
-  }
-  playerTurn.innerText = `${player1}'s turn`
 
-  // This is to signify the end  of the player name propmt and setting.
-  
+    playerTurn.innerText = `${players[1].name}'s turn`;
     game.style.opacity = 1;
     makeBoard();
     makeHtmlBoard();
-  
-      startBtn.remove();
+    
+    startBtn.remove();
 
 })
 
 reset.addEventListener('click',function(evt){
+evt.preventDefault();
 
-  evt.preventDefault();
-  
 // When the reset button is clicked, the board is to remain but all rows and pieces are to be removed and replaced by new 
 //empty rows.
 
@@ -56,10 +59,12 @@ reset.addEventListener('click',function(evt){
   htmlBoard = [];
   makeBoard();
   makeHtmlBoard();
+  currPlayer = 1;
   playerTurn.style.color = "#F7F603";
+  playerTurn.innerText = `${players[currPlayer].name}'s turn`
+  gameStillRunning = true;
   reset.style.opacity = 0;
 })
-
 
 
 /** makeBoard: create in-JS board structure:
@@ -105,7 +110,6 @@ function makeHtmlBoard() {
 function findSpotForCol(x) {
   // Going through each column from the second row, not including the top, check if the cells are empty, if so y if filled return null
   for(let y = HEIGHT -1; y >=0; y--){
-
     if(!htmlBoard[y][x]){
       return y
     }
@@ -125,52 +129,58 @@ function placeInTable(y, x) {
 
 /** endGame: announce game end */
 function endGame(msg) {
-  // Alert msg when game has ended 
-  alert(msg);
-  reset.style.opacity = 1;
+//Set the variable used to track if the game is still running to false 
+  gameStillRunning = false;
+// Alert msg when game has ended, use built in setTimeOut method to delay alert until the 4 connected pieces can be seen
+  setTimeout(() => {
+    alert(msg);
+    reset.style.opacity = 1;
+  }, 100)
+
 }
 
 /** handleClick: handle click of column top to play piece */
 function handleClick(evt) {
-  // get x from ID of clicked cell
+if(gameStillRunning === false) return;
+// get x from ID of clicked cell
   let x = +evt.target.id;
 
-  // get next spot in column (if none, ignore click)
+// get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
-  // place piece in board and add to HTML table
+// place piece in board and add to HTML table
   htmlBoard[y][x] = currPlayer;
   placeInTable(y, x);
 
-  // check for win
+// check for win
   if (checkForWin()) {
-    if(currPlayer === 1){
-      playerTurn.style.color = 'red';
-      return endGame(`${player1} won!`)
-    }
-    else if(currPlayer === 2){
-      playerTurn.style.color = 'blue';
-      return endGame(`${player2} won!`)
-    }
-    // return endGame(`Player ${currPlayer} won!`);
+    playerTurn.style.color = players[currPlayer].color;
+    return endGame(`${players[currPlayer].name} has won the game!`);
   }
 
-  // check for tie
-  // We check to see if all cells in board are filled; if so call, call endGame
-  if(htmlBoard.every(row => row.every(cell => cell))){
+// check for tie, we check to see if all cells in board are filled; if so, call endGame
+  if(checkForTie()){
     return endGame("Tie Game!")
   }
 
-  // switch players
-  // We check if the current player is player one using ternary operator, if it's 1 we switch to player 2, if not player one takes turn
+// switch players
+  switchCurrPlayer();
+}
+
+// We check if the current player is player 1 using ternary operator, if it's 1 we switch to player 2, if not player one takes turn
+function switchCurrPlayer(){
   currPlayer = currPlayer === 1 ? 2 : 1;
-  playerTurn.innerText = playerTurn.innerText === `${player1}'s turn` ? `${player2}'s turn` : `${player1}'s turn`;
+  playerTurn.innerText = `${players[currPlayer].name}'s turn`;
+}
+
+/** checkForTie: check board cell-by-cell for "are all cells filled?" */
+function checkForTie(){
+  return htmlBoard.every(row => row.every(cell => cell))
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
-
 function checkForWin() {
   function _win(cells) {
     // Check four cells to see if they're all color of current player
